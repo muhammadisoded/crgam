@@ -1,0 +1,155 @@
+12.30 12:02
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CRGRAM - Premium Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body { background: #000; color: white; font-family: -apple-system, sans-serif; overflow: hidden; margin: 0; }
+        
+        /* Fon uchun neon sharlar */
+        .neon-bg {
+            position: fixed; inset: 0; z-index: -1;
+            background: radial-gradient(circle at 20% 30%, #003344 0%, transparent 40%),
+                        radial-gradient(circle at 80% 70%, #330044 0%, transparent 40%);
+        }
+
+        .glass { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .neon-text { color: #00E5FF; text-shadow: 0 0 20px rgba(0, 229, 255, 0.8); }
+        .neon-border { border: 1px solid rgba(0, 229, 255, 0.3); box-shadow: 0 0 15px rgba(0, 229, 255, 0.1); }
+        
+        /* Chiroyli tugma */
+        .btn-gradient {
+            background: linear-gradient(90deg, #00E5FF, #7000FF);
+            transition: 0.3s;
+        }
+        .btn-gradient:active { transform: scale(0.95); opacity: 0.8; }
+
+        input::placeholder { color: rgba(255, 255, 255, 0.3); }
+
+        #auth-screen {
+            position: fixed; inset: 0; z-index: 200;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            padding: 25px; background: rgba(0,0,0,0.8);
+        }
+
+        .page { display: none; height: 100vh; overflow-y: auto; padding-top: 75px; padding-bottom: 90px; }
+        .active-page { display: block; animation: zoomIn 0.4s ease; }
+        @keyframes zoomIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+    </style>
+</head>
+<body>
+
+    <div class="neon-bg"></div>
+
+    <div id="auth-screen">
+        <div class="w-full max-w-sm glass rounded-[40px] p-8 text-center neon-border">
+            <div class="w-20 h-20 mx-auto mb-6 bg-black rounded-3xl flex items-center justify-center border border-cyan-500/50 shadow-[0_0_30px_rgba(0,229,255,0.3)]">
+                <span class="text-3xl font-black neon-text italic">CR</span>
+            </div>
+
+            <h1 class="text-3xl font-black italic mb-2 tracking-tighter">CRGRAM</h1>
+            <p class="text-gray-400 text-sm mb-10">Kelajak ijtimoiy tarmog'iga xush kelibsiz</p>
+
+            <div class="space-y-4">
+                <div class="relative">
+                    <i class="far fa-user absolute left-4 top-4 text-gray-500"></i>
+                    <input type="text" id="username" placeholder="Foydalanuvchi nomi" 
+                        class="w-full bg-white/5 p-4 pl-12 rounded-2xl outline-none border border-white/5 focus:border-cyan-500/50 transition-all">
+                </div>
+                
+                <div class="relative">
+                    <i class="far fa-lock absolute left-4 top-4 text-gray-500"></i>
+                    <input type="password" id="password" placeholder="Parol" 
+                        class="w-full bg-white/5 p-4 pl-12 rounded-2xl outline-none border border-white/5 focus:border-cyan-500/50 transition-all">
+                </div>
+
+                <button onclick="login()" class="w-full btn-gradient text-black font-bold py-4 rounded-2xl mt-4 shadow-lg shadow-cyan-500/30">
+                    Kirish
+                </button>
+            </div>
+
+            <div class="mt-8 flex items-center justify-center space-x-2 text-xs text-gray-500">
+                <span class="w-10 h-[1px] bg-gray-800"></span>
+                <span>Yoki</span>
+                <span class="w-10 h-[1px] bg-gray-800"></span>
+            </div>
+
+            <button class="mt-6 text-sm font-bold text-cyan-400">Ro'yxatdan o'tish</button>
+        </div>
+    </div>
+
+    <div id="app-content" style="display: none;">
+        <header class="glass fixed top-0 w-full z-50 p-4 flex justify-between items-center h-[70px]">
+            <h1 class="text-2xl font-black neon-text italic">CRGRAM</h1>
+            <div class="flex space-x-6 text-xl">
+                <i class="far fa-heart"></i>
+                <i class="fab fa-facebook-messenger"></i>
+            </div>
+        </header>
+
+        <div id="home" class="page active-page">
+            <div id="feed" class="p-4 space-y-6"></div>
+        </div>
+
+        <div id="profile" class="page p-6 text-center">
+            <div class="w-24 h-24 rounded-full bg-gradient-to-tr from-cyan-400 to-purple-500 mx-auto p-1 mb-4">
+                <img src="https://i.pravatar.cc/150?u=me" class="rounded-full w-full h-full object-cover border-2 border-black">
+            </div>
+            <h2 id="display-username" class="text-2xl font-bold"></h2>
+            <p class="text-gray-400 text-sm mt-1">Premium Member</p>
+            <button onclick="logout()" class="mt-20 text-red-500 border border-red-500/30 px-6 py-2 rounded-xl">Chiqish</button>
+        </div>
+
+        <nav class="glass fixed bottom-0 w-full h-[85px] flex justify-around items-center px-4 pb-4">
+            <button onclick="showPage('home')"><i class="fas fa-house text-2xl"></i></button>
+            <button onclick="alert('Tez kunda...')"><i class="fas fa-search text-2xl text-gray-500"></i></button>
+            <button class="bg-white text-black w-14 h-10 rounded-2xl flex items-center justify-center"><i class="fas fa-plus text-xl"></i></button>
+            <button onclick="alert('Reels yuklanmoqda...')"><i class="fas fa-clapperboard text-2xl text-gray-500"></i></button>
+            <button onclick="showPage('profile')"><i class="fas fa-user-circle text-2xl"></i></button>
+        </nav>
+    </div>
+
+    <script>
+        function login() {
+            const user = document.getElementById('username').value;
+            if(user.length > 2) {
+                localStorage.setItem('crgram_user', user);
+                startApp();
+            } else { alert("Iltimos, ismingizni kiriting!"); }
+        }
+
+        function startApp() {
+            document.getElementById('auth-screen').style.display = 'none';
+            document.getElementById('app-content').style.display = 'block';
+            document.getElementById('display-username').innerText = '@' + localStorage.getItem('crgram_user');
+            loadFeed();
+        }
+
+        function showPage(id) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active-page'));
+            document.getElementById(id).classList.add('active-page');
+        }
+
+        function loadFeed() {
+            const feed = document.getElementById('feed');
+            feed.innerHTML = '';
+            for(let i=1; i<=5; i++) {
+                feed.innerHTML += `
+                    <div class="glass rounded-[35px] overflow-hidden">
+                        <div class="p-4 flex items-center"><div class="w-8 h-8 rounded-full bg-cyan-500 mr-2 text-[10px] flex items-center justify-center">CR</div><span class="font-bold text-sm">cr_user_${i}</span></div>
+                        <img src="https://picsum.photos/600/600?random=${i}" class="w-full border-y border-white/5">
+                        <div class="p-4 flex space-x-6 text-xl"><i class="far fa-heart"></i><i class="far fa-comment"></i><i class="far fa-paper-plane"></i></div>
+                    </div>`;
+            }
+        }
+
+        function logout() { localStorage.clear(); location.reload(); }
+        if(localStorage.getItem('crgram_user')) startApp();
+    </script>
+</body>
+</html>
+
